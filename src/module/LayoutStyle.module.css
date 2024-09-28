@@ -1,0 +1,18 @@
+
+
+.header{
+    height: 70px;
+    background-color: #ff0f0f;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+}
+
+.content-section{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20px;
+}
+
