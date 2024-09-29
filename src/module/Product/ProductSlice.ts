@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus, IProduct, IProductState } from "./Product.type";
-import { createProduct, getProductList } from "./ProductService";
+import { createProduct, getProductList, updateProduct } from "./ProductService";
 
 
 const initialState: IProductState = {
@@ -25,6 +25,15 @@ export const createProductAction = createAsyncThunk<IProduct, any>(
         return response;
     }
 );
+
+export const updateProductAction = createAsyncThunk<IProduct, { id: number; data: any }>(
+    "product/updateProductAction",
+    async ({ id, data }) => {
+        const response = await updateProduct(id, data); // Kirim data ke API
+        return response;
+    }
+);
+
 
 const productSlice = createSlice({
     name: "product",

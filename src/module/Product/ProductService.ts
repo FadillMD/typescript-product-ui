@@ -25,3 +25,14 @@ export const createProduct = async (data: any): Promise<IProduct> => {
         discount: response.discount,
     };
 };
+
+export const updateProduct = async (id: number, data: any): Promise<IProduct> => {
+    const response = await HttpService.put(`${ApiConfig.product}/${id}`, data); // Kirim data ke API
+    return {
+        id: response.id,
+        productName: response.product_name,
+        category: response.category,
+        price: parseFloat(response.price),
+        discount: response.discount,
+    };
+};
