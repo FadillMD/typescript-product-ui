@@ -44,7 +44,7 @@ This project is a product management system built with React and TypeScript, con
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/username/repo-name.git
+   git clone https://github.com/FadillMD/typescript-product-ui.git
    cd repo-name
    ```
 2. Install dependencies:
