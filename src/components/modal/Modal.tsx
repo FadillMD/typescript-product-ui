@@ -9,7 +9,7 @@ interface IModalProps {
 
 const Modal = ({ isOpen, onClose, children }: IModalProps) => {
     if (!isOpen) {
-        return null; // Jangan tampilkan modal jika `isOpen` adalah false
+        return null; 
     }
 
     return (

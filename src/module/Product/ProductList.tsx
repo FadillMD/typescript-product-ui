@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import { getProductListAction, updateProductAction, deleteProductAction } from "./ProductSlice"; 
+import { getProductListAction, updateProductAction, deleteProductAction } from "./ProductSlice";
 import { ApiStatus, IProduct } from "./Product.type";
 import Modal from "../../components/modal/Modal";
-import { Input } from "../../components/input"; 
-import Style from "./ProductListStyle.module.css"; 
+import { Input } from "../../components/input";
+import Style from "./ProductListStyle.module.css";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -66,11 +66,14 @@ const ProductList = () => {
     };
 
     if (selectedProduct) {
-      dispatch(updateProductAction({ id: selectedProduct.id, data: productData }));
+      dispatch(updateProductAction({ id: selectedProduct.id, data: productData })).then(() => {
+        dispatch(getProductListAction()); // Memuat ulang daftar produk
+      });
     }
 
-    handleCloseModal(); 
+    handleCloseModal();
   };
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -85,8 +88,8 @@ const ProductList = () => {
       setIsDeleteConfirmOpen(false); // Tutup modal setelah menghapus
     }
   };
-// Data untuk ditampilkan pada halaman saat ini
-const displayedProducts = list.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  // Data untuk ditampilkan pada halaman saat ini
+  const displayedProducts = list.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div>
@@ -139,13 +142,13 @@ const displayedProducts = list.slice((currentPage - 1) * ITEMS_PER_PAGE, current
           <Input
             label="Harga:"
             type="number"
-            value={price.toString()} 
+            value={price.toString()}
             onChange={(e) => setPrice(Number(e.target.value))}
           />
           <Input
             label="Diskon:"
             type="number"
-            value={discount.toString()} 
+            value={discount.toString()}
             onChange={(e) => setDiscount(Number(e.target.value))}
           />
           <button type="submit">Update Product</button>
@@ -176,16 +179,16 @@ const displayedProducts = list.slice((currentPage - 1) * ITEMS_PER_PAGE, current
       </Modal>
 
       <div className={Style.pagination}>
-    {Array.from({ length: totalPages }, (_, index) => (
-        <button
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
             key={index + 1}
             onClick={() => handlePageChange(index + 1)}
             disabled={currentPage === index + 1}
-        >
+          >
             {index + 1}
-        </button>
-    ))}
-</div>
+          </button>
+        ))}
+      </div>
 
     </div>
   );

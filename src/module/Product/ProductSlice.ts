@@ -67,9 +67,10 @@ const productSlice = createSlice({
             const index = state.list.findIndex(product => product.id === updatedProduct.id);
             if (index !== -1) {
                 state.list[index] = updatedProduct; 
-                toast.success("Produk berhasil diupdate!"); 
+                toast.success("Produk berhasil diupdate!");
             }
         });
+        
         builder.addCase(deleteProductAction.fulfilled, (state, action) => {
             const idToDelete = action.meta.arg; 
             state.list = state.list.filter(product => product.id !== idToDelete);

@@ -37,7 +37,6 @@ const ProductForm = () => {
             newErrors.discount = "Diskon tidak boleh kurang dari 0";
         }
 
-        // Jika ada error, update state errors dan jangan lanjutkan
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
@@ -50,8 +49,8 @@ const ProductForm = () => {
             price,
             discount,
         };
-        dispatch(createProductAction(productData)); // Panggil aksi untuk menambahkan produk
-
+        dispatch(createProductAction(productData));
+        
         // Reset input
         setProductName("");
         setCategory("");
@@ -70,7 +69,7 @@ const ProductForm = () => {
                         setProductName(e.target.value);
                     }}
                 />
-                {errors.productName && <p style={{ color: 'red' }}>{errors.productName}</p>} {/* Pesan kesalahan */}
+                {errors.productName && <p style={{ color: 'red' }}>{errors.productName}</p>} 
 
 
                 <Input
@@ -81,7 +80,7 @@ const ProductForm = () => {
                         setCategory(e.target.value);
                     }}
                 />
-                {errors.category && <p style={{ color: 'red' }}>{errors.category}</p>} {/* Pesan kesalahan */}
+                {errors.category && <p style={{ color: 'red' }}>{errors.category}</p>} 
 
                 <Input
                     label="Harga:"
@@ -91,7 +90,7 @@ const ProductForm = () => {
                         setPrice(Number(e.target.value));
                     }}
                 />
-                {errors.price && <p style={{ color: 'red' }}>{errors.price}</p>} {/* Pesan kesalahan */}
+                {errors.price && <p style={{ color: 'red' }}>{errors.price}</p>}
 
                 <Input
                     label="Diskon:"
@@ -101,7 +100,7 @@ const ProductForm = () => {
                         setDiscount(e.target.value ? Number(e.target.value) : undefined);
                     }}
                 />
-                {errors.discount && <p style={{ color: 'red' }}>{errors.discount}</p>} {/* Pesan kesalahan */}
+                {errors.discount && <p style={{ color: 'red' }}>{errors.discount}</p>}
 
                 <div className={styles["btn-wrapper"]}>
                     <input type="submit" value="Add Product" />
