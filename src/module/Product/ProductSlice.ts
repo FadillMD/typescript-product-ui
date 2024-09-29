@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus, IProduct, IProductState } from "./Product.type";
-import { getProductList } from "./ProductService";
+import { createProduct, getProductList } from "./ProductService";
 
 
 const initialState: IProductState = {
@@ -14,6 +14,15 @@ export const getProductListAction = createAsyncThunk<IProduct[]>(
     async () => {
         const response = await getProductList(); 
         return response; // Langsung return response yang berupa array
+    }
+);
+
+// Async thunk untuk menambahkan produk baru
+export const createProductAction = createAsyncThunk<IProduct, any>(
+    "product/createProductAction",
+    async (productData) => {
+        const response = await createProduct(productData); // Kirim data ke API
+        return response;
     }
 );
 
@@ -31,6 +40,9 @@ const productSlice = createSlice({
         });
         builder.addCase(getProductListAction.rejected, (state) => {
             state.listStatus = ApiStatus.error;
+        });
+        builder.addCase(createProductAction.fulfilled, (state, action) => {
+            state.list.push(action.payload); // Tambahkan produk baru ke list
         });
     }
 });
