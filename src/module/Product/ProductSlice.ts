@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus, IProduct, IProductState } from "./Product.type";
-import { createProduct, getProductList, updateProduct } from "./ProductService";
+import { createProduct, getProductList, updateProduct, deleteProduct } from "./ProductService";
+import axiosExport from "../../service/HttpService";
+import ApiConfig from "../../service/ApiConfig";
 
 
 const initialState: IProductState = {
@@ -34,6 +36,13 @@ export const updateProductAction = createAsyncThunk<IProduct, { id: number; data
     }
 );
 
+// Async thunk untuk menghapus produk
+export const deleteProductAction = createAsyncThunk<void, number>(
+    "product/deleteProductAction",
+    async (id) => {
+        await deleteProduct(id); // Panggil fungsi delete dari ProductService
+    }
+);
 
 const productSlice = createSlice({
     name: "product",
@@ -52,6 +61,18 @@ const productSlice = createSlice({
         });
         builder.addCase(createProductAction.fulfilled, (state, action) => {
             state.list.push(action.payload); // Tambahkan produk baru ke list
+        });
+        builder.addCase(updateProductAction.fulfilled, (state, action) => {
+            const updatedProduct = action.payload; // Ambil payload langsung
+            const index = state.list.findIndex(product => product.id === updatedProduct.id);
+            if (index !== -1) {
+                state.list[index] = updatedProduct; // Update produk di state
+            }
+        });
+        builder.addCase(deleteProductAction.fulfilled, (state, action) => {
+            // Ambil id dari action.payload (parameter)
+            const idToDelete = action.meta.arg; // id dari argumen deleteProductAction
+            state.list = state.list.filter(product => product.id !== idToDelete); // Hapus produk dari list
         });
     }
 });

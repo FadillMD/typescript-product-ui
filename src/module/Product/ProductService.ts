@@ -36,3 +36,7 @@ export const updateProduct = async (id: number, data: any): Promise<IProduct> =>
         discount: response.discount,
     };
 };
+
+export const deleteProduct = async (id: number): Promise<void> => {
+    await HttpService.delete(`${ApiConfig.product}/${id}`); // Panggil API delete
+};
