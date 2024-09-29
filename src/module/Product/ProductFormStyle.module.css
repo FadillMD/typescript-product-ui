@@ -1,12 +1,62 @@
 .container {
     display: flex;
     justify-content: center;
-
+    align-items: flex-start; /* Align items at the start */
+    height: auto; /* Change to auto to reduce height */
+    margin-top: 20px; /* Adjust top margin to bring it closer */
+    background-color: #f9f9f9; /* Light background for contrast */
 }
+
 .form {
     width: 400px;
+    padding: 20px; /* Add padding around the form */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: white; /* White background for the form */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-top: 20px; /* Reduce margin to bring it closer */
 }
+
+input[type="text"],
+input[type="number"] {
+    width: 100%; /* Full width input */
+    padding: 10px; /* Add some padding inside the input */
+    margin: 10px 0; /* Space between inputs */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px; /* Slightly rounded corners */
+    font-size: 16px; /* Increase font size for readability */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
 .btn-wrapper {
-    float: right;
-    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end; /* Align button to the right */
+    margin-top: 20px; /* More space above the button */
+}
+
+input[type="submit"] {
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Add padding to the button */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Increase font size */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+p {
+    margin: 5px 0; /* Space around error messages */
+    font-size: 14px; /* Slightly smaller font for error messages */
+    color: red; /* Error message color */
 }

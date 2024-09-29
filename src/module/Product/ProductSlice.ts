@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiStatus, IProduct, IProductState } from "./Product.type";
 import { createProduct, getProductList, updateProduct, deleteProduct } from "./ProductService";
-import axiosExport from "../../service/HttpService";
-import ApiConfig from "../../service/ApiConfig";
+import { toast } from "react-toastify";
 
 
 const initialState: IProductState = {
@@ -15,7 +14,7 @@ export const getProductListAction = createAsyncThunk<IProduct[]>(
     "product/getProductListAction",
     async () => {
         const response = await getProductList(); 
-        return response; // Langsung return response yang berupa array
+        return response; 
     }
 );
 
@@ -23,7 +22,7 @@ export const getProductListAction = createAsyncThunk<IProduct[]>(
 export const createProductAction = createAsyncThunk<IProduct, any>(
     "product/createProductAction",
     async (productData) => {
-        const response = await createProduct(productData); // Kirim data ke API
+        const response = await createProduct(productData); 
         return response;
     }
 );
@@ -40,7 +39,7 @@ export const updateProductAction = createAsyncThunk<IProduct, { id: number; data
 export const deleteProductAction = createAsyncThunk<void, number>(
     "product/deleteProductAction",
     async (id) => {
-        await deleteProduct(id); // Panggil fungsi delete dari ProductService
+        await deleteProduct(id); 
     }
 );
 
@@ -54,25 +53,27 @@ const productSlice = createSlice({
         });
         builder.addCase(getProductListAction.fulfilled, (state, action) => {
             state.listStatus = ApiStatus.idle;
-            state.list = action.payload; // Ini sekarang berisi array IProduct[]
+            state.list = action.payload; 
         });
         builder.addCase(getProductListAction.rejected, (state) => {
             state.listStatus = ApiStatus.error;
         });
         builder.addCase(createProductAction.fulfilled, (state, action) => {
             state.list.push(action.payload); // Tambahkan produk baru ke list
+            toast.success("Produk berhasil ditambahkan!");
         });
         builder.addCase(updateProductAction.fulfilled, (state, action) => {
-            const updatedProduct = action.payload; // Ambil payload langsung
+            const updatedProduct = action.payload; 
             const index = state.list.findIndex(product => product.id === updatedProduct.id);
             if (index !== -1) {
-                state.list[index] = updatedProduct; // Update produk di state
+                state.list[index] = updatedProduct; 
+                toast.success("Produk berhasil diupdate!"); 
             }
         });
         builder.addCase(deleteProductAction.fulfilled, (state, action) => {
-            // Ambil id dari action.payload (parameter)
-            const idToDelete = action.meta.arg; // id dari argumen deleteProductAction
-            state.list = state.list.filter(product => product.id !== idToDelete); // Hapus produk dari list
+            const idToDelete = action.meta.arg; 
+            state.list = state.list.filter(product => product.id !== idToDelete);
+            toast.success("Produk berhasil dihapus!");
         });
     }
 });

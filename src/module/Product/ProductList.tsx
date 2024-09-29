@@ -5,14 +5,20 @@ import { getProductListAction, updateProductAction, deleteProductAction } from "
 import { ApiStatus, IProduct } from "./Product.type";
 import Modal from "../../components/modal/Modal";
 import { Input } from "../../components/input"; 
+import Style from "./ProductListStyle.module.css"; 
+
+const ITEMS_PER_PAGE = 20;
 
 const ProductList = () => {
   const { list, listStatus } = useAppSelector((state: RootState) => state.product);
   const dispatch = useAppDispatch();
 
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<number | null>(null);
 
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
@@ -22,6 +28,8 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(getProductListAction());
   }, [dispatch]);
+
+  const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE);
 
   const handleEditProduct = (product: IProduct) => {
     setSelectedProduct(product);
@@ -63,12 +71,22 @@ const ProductList = () => {
 
     handleCloseModal(); 
   };
-
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   const handleDeleteProduct = (id: number) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
-        dispatch(deleteProductAction(id)); // Panggil aksi delete
+    setProductToDelete(id);
+    setIsDeleteConfirmOpen(true); // Buka modal konfirmasi
+  };
+  const confirmDeleteProduct = () => {
+    if (productToDelete !== null) {
+      dispatch(deleteProductAction(productToDelete));
+      setProductToDelete(null);
+      setIsDeleteConfirmOpen(false); // Tutup modal setelah menghapus
     }
-};
+  };
+// Data untuk ditampilkan pada halaman saat ini
+const displayedProducts = list.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div>
@@ -87,17 +105,17 @@ const ProductList = () => {
         {listStatus === ApiStatus.loading && <tbody>List is Loading....</tbody>}
         {listStatus === ApiStatus.error && <tbody>Error while Loading list</tbody>}
 
-        {listStatus === ApiStatus.idle && list.map((product, index) => (
+        {listStatus === ApiStatus.idle && displayedProducts.map((product, index) => (
           <tr key={product.id}>
-            <td>{index + 1}</td>
+            <td>{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
             <td>{product.productName}</td>
             <td>{product.category}</td>
             <td>{product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
             <td>{product.discount ?? 0}%</td>
             <td>
-              <button onClick={() => handleViewProduct(product)}>View</button>
-              <button onClick={() => handleEditProduct(product)}>Edit</button>
-              <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+              <button className={Style.button} onClick={() => handleViewProduct(product)}>View</button>
+              <button className={Style.button} onClick={() => handleEditProduct(product)}>Edit</button>
+              <button className={`${Style.button} ${Style.delete}`} onClick={() => handleDeleteProduct(product.id)}>Delete</button>
             </td>
           </tr>
         ))}
@@ -147,6 +165,28 @@ const ProductList = () => {
           </div>
         )}
       </Modal>
+      {/* Modal konfirmasi hapus produk */}
+      <Modal isOpen={isDeleteConfirmOpen} onClose={() => setIsDeleteConfirmOpen(false)}>
+        <div>
+          <h3>Konfirmasi Hapus</h3>
+          <p>Apakah Anda yakin ingin menghapus produk ini?</p>
+          <button onClick={confirmDeleteProduct}>Ya, Hapus</button>
+          <button onClick={() => setIsDeleteConfirmOpen(false)}>Batal</button>
+        </div>
+      </Modal>
+
+      <div className={Style.pagination}>
+    {Array.from({ length: totalPages }, (_, index) => (
+        <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+        >
+            {index + 1}
+        </button>
+    ))}
+</div>
+
     </div>
   );
 };

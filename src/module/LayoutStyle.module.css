@@ -1,6 +1,4 @@
-
-
-.header{
+.header {
     height: 70px;
     background-color: #ff0f0f;
     color: #ffffff;
@@ -8,11 +6,14 @@
     justify-content: center;
     align-items: center;
     font-size: larger;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Tambahkan bayangan */
 }
 
-.content-section{
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 20px;
+.content-section {
+    margin: 20px auto; /* Atur margin agar lebih simetris */
+    max-width: 1200px; /* Batasi lebar maksimum untuk tampilan responsif */
+    padding: 20px; /* Tambahkan padding untuk ruang di dalam */
+    background-color: #f8f8f8; /* Tambahkan latar belakang untuk konten */
+    border-radius: 8px; /* Tambahkan sudut melengkung */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan halus */
 }
-

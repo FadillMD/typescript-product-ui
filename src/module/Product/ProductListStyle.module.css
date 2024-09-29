@@ -1,0 +1,51 @@
+.button {
+    background-color: #007bff; /* Warna latar belakang biru */
+    color: white; /* Warna teks putih */
+    border: none; /* Menghilangkan border default */
+    border-radius: 5px; /* Sudut melengkung */
+    padding: 10px 15px; /* Padding dalam tombol */
+    margin-right: 5px; /* Jarak antar tombol */
+    cursor: pointer; /* Tangan saat hover */
+    font-size: 14px; /* Ukuran font */
+    transition: background-color 0.3s, transform 0.2s; /* Transisi untuk hover */
+}
+
+.button:hover {
+    background-color: #0056b3; /* Warna latar belakang saat hover */
+    transform: translateY(-2px); /* Efek angkat sedikit saat hover */
+}
+
+.button.delete {
+    background-color: #dc3545; /* Warna latar belakang merah untuk tombol delete */
+}
+
+.button.delete:hover {
+    background-color: #c82333; /* Warna latar belakang lebih gelap saat hover */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination button {
+    background-color: #ff4242; /* Background color for buttons */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding inside the buttons */
+    margin: 0 5px; /* Space between buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Transition effects */
+}
+
+.pagination button:hover {
+    background-color: #e03e3e; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.pagination button:disabled {
+    background-color: #ccc; /* Grey background for disabled button */
+    cursor: not-allowed; /* Not-allowed cursor for disabled button */
+}
